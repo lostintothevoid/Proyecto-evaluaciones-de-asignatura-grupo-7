@@ -28,8 +28,8 @@ public class Colegio{
 
   public boolean agregar(tipoAsignatura asignatura){
     //Si la asignatura no se encuentra o el arreglo esta vacio se devuelve un false
-    tipoAsignatura asig = buscar(nombre);
-    if(asig =! null) return false;
+    tipoAsignatura asig = buscar(asignatura.getNombre());
+    if(asig != null) return false;
     
     //Si pasa el if anterior significa que la asignatura no existe por lo tanto se agrega
     asignaturas.add(asignatura);
