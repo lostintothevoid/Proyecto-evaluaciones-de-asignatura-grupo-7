@@ -8,13 +8,14 @@ public class tipoEvaluacion{
   private String unidad;
   private ArrayList <String> preguntas;
 
-  public tipoEvaluacion(double promedio, String fecha, string contenido, ArrayList preguntas2 ){
+  public tipoEvaluacion(double promedio, String fecha, String contenido, ArrayList <String> preguntas2 ){
     promedioNotas = promedio;
     this.fecha = fecha;
-    this.contenido = contenido;
+    unidad = contenido;
     preguntas = new ArrayList();
-    for(int i; i<preguntas2.size(); i++){
-      preguntas.add(i, preguntas2.get(i));
+    for(int i=0; i < preguntas2.size(); i++){
+      String preguntaAnadir = preguntas2.get(i);
+      preguntas.add(i, preguntaAnadir);
     }
   }
 
@@ -34,7 +35,7 @@ public class tipoEvaluacion{
     return fecha;
   }
 
-  public ArrayList<String> getPreguntas(){
+  public ArrayList <String> getPreguntas(){
     return preguntas;
   }
 
@@ -71,23 +72,23 @@ public class tipoEvaluacion{
     return;
   }
   
-  public void setFecha(String fecha){
+  public void setFecha (String fecha){
     this.fecha = fecha ;
     return;
   }
 
-  public void setUnidad(String unidad){
+  public void setUnidad (String unidad){
     this.unidad = unidad ;
     return;
   }
 
-  public void anadirPregunta(String pregunta){
+  public void anadirPregunta (String pregunta){
     preguntas.add(pregunta);
   }
 
-  public void eliminarPregunta(string pregunta){
+  public void eliminarPregunta (String pregunta){
     if(preguntas.contains(pregunta)==false){
-      system.out.println("Esta pregunta no se encuentra");
+      System.out.println("Esta pregunta no se encuentra");
       return;
     }
     else{

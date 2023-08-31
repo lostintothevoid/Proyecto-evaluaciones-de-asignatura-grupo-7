@@ -3,12 +3,12 @@ import java.util.ArrayList;
 
 public class tipoAsignatura{
   private String nombreAsignatura;
-  private ArrayList <tipoEvaluaciones> evaluaciones; 
+  private ArrayList < tipoEvaluacion > evaluaciones; 
   private int cantEvaluaciones;
   
-  public tipoAsignatura(String nombre, int tamano){
+  public tipoAsignatura(String nombre){
     nombreAsignatura = nombre;
-    cantEvaluaciones = tamano;
+    cantEvaluaciones = 0;
     evaluaciones = new ArrayList();
   }
   
@@ -17,7 +17,7 @@ public class tipoAsignatura{
   }
 
   public void setNombre(String nuevoNombre){
-    nombreAsignatura.nombre=nuevoNombre;
+    nombreAsignatura=nuevoNombre;
     return;
   }
 
@@ -36,6 +36,9 @@ public class tipoAsignatura{
       return null;
     }
     //:D
+
+    //CAMBIAR ESTO Y QUIZAS AÑADIR UN MAPA
+    
     if(evaluaciones.contains(nombre) == true){
       return evaluaciones.get(evaluaciones.indexOf(nombre));
     }
@@ -43,14 +46,16 @@ public class tipoAsignatura{
     return null;
   }
   
-  public bool agregarEvaluacion(tipoEvaluacion evaluacion){
+  public boolean agregarEvaluacion(tipoEvaluacion evaluacion){
     //Si la asignatura no se encuentra o el arreglo esta vacio se devuelve un false
-    tipoEvaluacion eva = buscar(evaluacion.getNombre());
+    if(evaluaciones.indexOf(evaluacion) != -1) return false;
+    
     if(eva != null) return false;
     
     //Si pasa el if anterior significa que la asignatura no existe por lo tanto se agrega
     evaluaciones.add(evaluacion);
-    //mapaAsignaturas.put(asignatura.getNombre(),asignatura);
+    cantEvaluaciones++;
+    
     return true;
   }
 
@@ -74,10 +79,10 @@ public class tipoAsignatura{
   }
 //listado de evaluaciones
   public void listarEvaluaciones(){
-    System.out.println("Evaluaciones de " + nombreAsignatura +":");
+    System.out.println("Evaluaciones de " + this.nombreAsignatura +":");
     //Hay que complementar listar ya que hay que ver bien que hay que mostrar
     for(int i = 0; i < evaluaciones.size(); i++){
-      System.out.println(evaluaciones.get(i).getNombre());
+      System.out.println(evaluaciones.get(i).getUnidad());
     }
   }
 }

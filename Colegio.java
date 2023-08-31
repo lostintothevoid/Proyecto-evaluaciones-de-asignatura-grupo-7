@@ -20,7 +20,7 @@ public class Colegio{
     }
     /* con la ayuda del mapa se busca si la asignatura se encuentra de estar retorna una variable tipoAsignatura con */
     if(mapaAsignaturas.containsKey(nombre)== true){
-      return mapaAsignatura.get(nombre);
+      return mapaAsignaturas.get(nombre);
     }
     // por ultimo de no encontrar nada en el proceso por defecto retornara null
     return null;
@@ -28,6 +28,7 @@ public class Colegio{
 
   public boolean agregar(tipoAsignatura asignatura){
     //Si la asignatura no se encuentra o el arreglo esta vacio se devuelve un false
+
     tipoAsignatura asig = buscar(asignatura.getNombre());
     if(asig != null) return false;
     
@@ -51,7 +52,7 @@ public class Colegio{
         if(asignaturas.get(i).getNombre().equals(asigna.getNombre())){
           //Se elimina del ArrayList y del HashMap
           asignaturas.remove(i);
-          mapaAsignaturas.remove(nombre);
+          mapaAsignaturas.remove(asigna.getNombre());
           System.out.println("La asignatura ha sido borrada con exito");
           return;
         }
@@ -62,7 +63,7 @@ public class Colegio{
   public void listarAsignaturas(){
     System.out.println("Asignaturas:");
     for(int i = 0; i < asignaturas.size(); i++){
-      System.out.println(asignatura.get(i).getNombre());
+      System.out.println(asignaturas.get(i).getNombre());
     }
   }
 }
