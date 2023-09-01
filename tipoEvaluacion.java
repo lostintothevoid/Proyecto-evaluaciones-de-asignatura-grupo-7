@@ -1,6 +1,5 @@
-import java.io.*;
 import java.util.ArrayList;
-
+// returns inecesarios segun netbeans con marca **
 public class tipoEvaluacion{
   private double promedioNotas;
   private int cantNotas;
@@ -49,6 +48,7 @@ public class tipoEvaluacion{
     promedioCant = promedioCant + notaAnadir;
     cantNotas++;
     promedioNotas = promedioCant / (cantNotas);
+    //**
     return;
   }
 
@@ -64,21 +64,37 @@ public class tipoEvaluacion{
     promedioCant = promedioCant + (double)notaAnadir;
     cantNotas++;
     promedioNotas = promedioCant / (cantNotas);
+    //**
     return;
   }  
 
   public void setTotalNotas(int notastotal){
     cantNotas = notastotal;
+    //**
+    return;
+  }
+
+  public void setPromedio(double promedio){
+    promedioNotas = promedio;
+    //**
+    return;
+  }
+
+  public void setTotalNotas(double notastotal){
+    cantNotas = (int)notastotal;
+    //**
     return;
   }
   
   public void setFecha (String fecha){
     this.fecha = fecha ;
+    //**
     return;
   }
 
   public void setUnidad (String unidad){
     this.unidad = unidad ;
+    //**
     return;
   }
 
@@ -94,10 +110,15 @@ public class tipoEvaluacion{
     else{
       preguntas.remove(preguntas.indexOf(pregunta));
     }
+    //**
     return;
   }
   
   public void listarPreguntas(){
+    if (preguntas.isEmpty() == true){
+      System.out.println("No hay preguntas registradas para esta evaluación"); 
+      System.out.println("");
+    }
     System.out.println("Preguntas de la "+ unidad +":");
     //Hay que complementar listar ya que hay que ver bien que hay que mostrar
     for(int i = 0 ; i < preguntas.size() ; i++){
