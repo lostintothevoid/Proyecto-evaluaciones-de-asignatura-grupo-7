@@ -64,6 +64,10 @@ public class Pregunta{
     alternativas.set(index, alter);
   }
   
+  public void setAlternativa(String alter){
+    alternativas.add(alter);
+  }
+  
   public void agregarAlternativas(ArrayList<String> alternativas2, String altCorrecta){
     alternativas = (ArrayList<String>) alternativas2.clone();
     this.altCorrecta = altCorrecta;

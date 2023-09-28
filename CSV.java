@@ -80,8 +80,8 @@ public class CSV
     public String get_csvField(String line,int field)
     {
         Scanner s = new Scanner(line);
-        int index =(0);
-        s.useDelimiter(",|\\n");
+        int index = 0;
+        s.useDelimiter(";|\\n");
         String output;
         
         while(s.hasNext())

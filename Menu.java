@@ -13,7 +13,7 @@ public class Menu {
     this.colegio = colegio;
   }
   
-  public void opciones() throws IOException{
+  public void opciones() throws IOException,AbrirArchivoException{
    
     // se utiliza el lector para registrar la eleccion del usuario
     BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
@@ -629,67 +629,68 @@ public class Menu {
     System.out.println("Eliminación exitosa"); 
   }  
 
-  public void importar(){
-    CSV csv = new CSV("datos.csv");
-    
+  public void importar() throws AbrirArchivoException, IOException{
+    CSV csv = new CSV("exportar");
+    if(csv == null){
+      throw new AbrirArchivoException();
+    }
     String linea = csv.firstLine();
     linea=csv.nextLine();
-    Colegio cc = new Colegio();
+    int i = 0; //inidca cada elemento recorrido
     while(linea!=null){  
-      //ASIGNATURA;UNIDAD;FECHA;CANTPREG;PREGUNTA;TEMA;CANTALT;ALTERNATIVAS;ALTCORRECTA;CANTNOTAS;NOTA;ALUMNO
-      /*elemento 0, ASIGNATURA
-      elemento 1, UNIDAD
-      elemento 2, FECHA
-      elemento 3, CANTPREG
-      
-      elemento i+1                                                PREGUNTA
-      elemento i+2                                                TEMA
-      
-      elemento i+3                                                CANTALT
-      
-      elemento i+(j+1) -> i+CANTALT                               ALTERNATIVAS
-      elemento i+CANTALT                                          ALTCORRECTA
-      elemento i+CANTALT+1                                        CANTNOTAS
-      elemento i+CANTALT+2 Y i+CANTALT+3                          NOTA Y ALUMNO
-               i+CANTALT+2+CANTNOTAS Y i+CANTALT+3+CANTNOTAS
-      */
  
       Evaluacion ee = new Evaluacion(); 
-      ee.setAsignatura(csv.get_csvField(linea,0));
-      ee.setUnidad(csv.get_csvField(linea,1));
-      ee.setFecha(csv.get_csvField(linea,2));
-
-      int i = 3;
+      ee.setAsignatura(csv.get_csvField(linea,i));
+      i++;//1
+      ee.setUnidad(csv.get_csvField(linea,i));
+      i++;//2
+      ee.setFecha(csv.get_csvField(linea,i));
+      i++;//3
+      int cantPreg = Integer.parseInt(csv.get_csvField(linea,i));
+      i++;//4
+      
       while((csv.get_csvField(linea,i)) != null){
-        
-        Pregunta pp = new Pregunta();
-        pp.setPregunta(csv.get_csvField(linea,i+1));
-        pp.setTema(csv.get_csvField(linea,i+2));
-        
-        for(int j = 0; j<csv.get_csvField(linea,i+3) ;j++){
-          pp.setAlternativa(csv.get_csvField(linea,i+(j+1)));
-        }
-        pp.setAltCorrecta(csv.get_csvField(linea,(i + csv.get_csvField(linea, i+3)) ));
-        ee.anadirPregunta(pp); 
 
-        Nota nn = new Nota();
-        //CANTNOTAS ((i+ (csv.get_csvField(linea,i+3)))+1)
-        for(int k = 0; k < ((i+ (csv.get_csvField(linea,i+3)))+1); k++){
-          nn.setNota(csv.get_csvField(linea, (((i+ (csv.get_csvField(linea,i+3)))+2)+k)));
-          nn.setAlumno(csv.get_csvField(linea, (((i+ (csv.get_csvField(linea,i+3)))+3)+k)));
+        //Preguntas
+        for(int j = 0; j < cantPreg;j++){
+          Pregunta pp = new Pregunta();
+          pp.setPregunta(csv.get_csvField(linea,i));
+          i++;//5
+          pp.setTema(csv.get_csvField(linea,i));
+          i++;//6
+          int cantAlt = Integer.parseInt(csv.get_csvField(linea,i));
+          i++;//7
+
+          //Alternativas
+          for(int k = 0; k < cantAlt;k++){
+            pp.setAlternativa(csv.get_csvField(linea,i));
+            i++;
+          }
+          pp.setAltCorrecta(csv.get_csvField(linea, i));
+          i++;
+          ee.anadirPregunta(pp); 
         }
-        ee.anadirNota(nn); 
+
+        int cantNotas = Integer.parseInt(csv.get_csvField(linea,i));
         i++;
+        for(int j = 0; j < cantNotas; j++){
+          Nota nn = new Nota();
+          double nota = Double.parseDouble(csv.get_csvField(linea, i));
+          i++;
+          nn.setNota(nota);
+          nn.setAlumno(csv.get_csvField(linea, i));
+          i++;
+          ee.anadirNota(nn); 
+        }
       }
-      cc.agregarEvaluacion(ee);
+      colegio.agregarEvaluacion(ee);
       linea=csv.nextLine();
     }
     csv.close();
     
   }
 
-
-  public void exportar(){
+  public void exportar()throws IOException{
     PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(new File("exportar.csv"))));
     
     escritor.println("ASIGNATURA;UNIDAD;FECHA;CANTPREG;PREGUNTA;TEMA;CANTALT;ALTERNATIVAS;ALTCORRECTA;CANTNOTAS;NOTA;ALUMNO");
@@ -710,15 +711,15 @@ public class Menu {
         Pregunta pp = preguntas.get(j);
         ArrayList <String> alternativas = pp.getAlternativas();
 
-        int tamano2 = preguntas.size();
-        String cantAlt = Integer.toString(tamano);
-        escritor.print(pp.getPregunta() + ";" + pp.getTema() + ";" + eva.getFecha() + ";" + cantAlt + ";");
+        int tamano2 = alternativas.size();
+        String cantAlt = Integer.toString(tamano2);
+        escritor.print(pp.getPregunta() + ";" + pp.getTema() + ";" + cantAlt + ";");
 
         for (int k = 0 ; k < alternativas.size() ; k++){
           String alt = alternativas.get(k);
           escritor.print(alt + ";");
         }
-        escritor.print(pp.getAltCorrecta());
+        escritor.print(pp.getAltCorrecta() + ";");
       }
 
       ArrayList <Nota> notas = eva.getNotas();
@@ -730,7 +731,7 @@ public class Menu {
 
       for(int l = 0 ; l < notas.size() ; l++){
         Nota nn = notas.get(l);
-        escritor.print(nn.getNota() + ";" + nn.getAlumno() + ";");
+        escritor.print(nn.getNotaString() + ";" + nn.getAlumno() + ";");
       }
      escritor.println();
     }
