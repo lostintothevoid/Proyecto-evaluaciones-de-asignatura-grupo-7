@@ -23,6 +23,7 @@ public class CSV
      */
     public CSV(String name) throws FileNotFoundException
     {
+      
       this.file =new BufferedReader(new FileReader("./"+name+".csv"));
     }
     
@@ -55,7 +56,7 @@ public class CSV
      */
     public String firstLine() throws IOException
     {
-        return nextLine();
+      return nextLine();
     }
     
     /**
@@ -64,10 +65,16 @@ public class CSV
      * @return Linea siguiente del CSV
      * @throws IOException Error de I/O
      */
-    public String nextLine() throws IOException
+    public String nextLine() 
     {
+      try{
         this.currentLine =this.file.readLine();
         return(this.currentLine);
+      }catch(IOException e){
+        System.out.println("No se pudo acceder a la linea");
+        return null;
+      }
+        
     }
     
     /**
@@ -155,8 +162,13 @@ public class CSV
      * 
      * @throws IOException Error de I/O
      */
-    public void close() throws IOException
+    public void close()
     {
+      try{
         file.close();
+      }catch (IOException e){
+        System.out.println("Error al cerrar el archivo");
+      }
+        
     }
 }

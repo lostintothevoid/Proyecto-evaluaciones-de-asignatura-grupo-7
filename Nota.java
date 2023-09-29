@@ -24,6 +24,7 @@ public class Nota{
   public double getNota(){
     return nota;
   }
+  
   public String getNotaString(){
     String notaString = String.valueOf(nota);
     return notaString;

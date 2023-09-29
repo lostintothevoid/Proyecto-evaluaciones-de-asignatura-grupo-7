@@ -8,6 +8,7 @@ public class Evaluacion{
   private ArrayList <Pregunta> preguntas;
 
   //Constructor, recibe todos los parámetros
+  //???
   public Evaluacion(String unidad,String asignatura, String fecha, ArrayList <Nota> notas2, ArrayList <Pregunta> preguntas2){
     this.fecha = fecha;
     this.unidad = unidad;
@@ -53,7 +54,8 @@ public class Evaluacion{
   public String getAsignatura(){
     return asignatura;
   }
-  
+
+  //??
   public ArrayList<Pregunta> getPreguntas(){
     ArrayList <Pregunta> aux = (ArrayList <Pregunta>) preguntas.clone();
     return aux;
@@ -96,12 +98,12 @@ public class Evaluacion{
   public double promedioEvaluacion(){
     int cantNotas = notas.size();
     double suma = 0;
+    if(cantNotas == 0){
+      return 0;
+    }
     for(int i = 0; i < cantNotas; i++){
       Nota nn = (Nota)notas.get(i);
       suma = suma + nn.getNota();
-    }
-    if(cantNotas==0){
-      return 0.999999;
     }
     return suma/cantNotas;
   }
@@ -117,16 +119,13 @@ public class Evaluacion{
   }
 
   //Extras pregunta
-  public boolean anadirPregunta (Pregunta pregunta){
-    if(preguntas.contains(pregunta)){
-      return false;
-    }
-    else{
-      preguntas.add(pregunta);
-      return true;
-    }
+
+  //??
+  public void anadirPregunta (Pregunta pregunta){
+    preguntas.add(pregunta);
   }
-  
+
+  //??
   public boolean eliminarPregunta (String pregunta){
     if(preguntas.contains(pregunta)==false){
       //System.out.println("Esta pregunta no se encuentra");
@@ -138,10 +137,12 @@ public class Evaluacion{
     }
     return true;
   }
-  
+
+  //??
   public Pregunta buscarPregunta(String pregunta){
     for(int i = 0; i < preguntas.size(); i++){
       Pregunta pp = preguntas.get(i);
+           
       if(pp.getPregunta().equals(pregunta)){
         return pp;
       }

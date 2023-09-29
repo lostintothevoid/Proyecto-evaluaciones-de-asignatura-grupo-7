@@ -1,8 +1,11 @@
+/*
 import java.util.*;
 import java.io.*;
 
-public class AbrirArchivoException extends Exception{
-  public AbrirArchivoException(){
-    super("El archiov no pudo ser abierto");
+public class PreguntaRepetidaException extends Exception{
+  public PreguntaRepetidaException(){
+    super("La pregunta está repetida");
   }
+  
 }
+*/
