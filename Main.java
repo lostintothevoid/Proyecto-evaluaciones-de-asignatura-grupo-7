@@ -7,7 +7,7 @@ public class Main {
     Colegio colegio = new Colegio();
     Menu mainmenu = new Menu(colegio);
     mainmenu.importar();    
-    //colegio.datosIniciales();
+    //colegio.datosIniciales(); 
     mainmenu.opciones();
     mainmenu.exportar();
     mainmenu.reporte();

@@ -23,7 +23,11 @@ public class CSV
      */
     public CSV(String name) throws FileNotFoundException
     {
-      
+      /*
+      String projectDirectory = System.getProperty("user.dir");
+      String filePath = projectDirectory + "/" + name + ".csv";
+      this.file = new BufferedReader(new FileReader(filePath));
+      */
       this.file =new BufferedReader(new FileReader("./"+name+".csv"));
     }
     

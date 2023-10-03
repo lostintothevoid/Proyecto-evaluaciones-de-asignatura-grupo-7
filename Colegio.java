@@ -6,40 +6,56 @@ public class Colegio{
   private ArrayList <Evaluacion> arrayEvaluaciones;
   private HashMap <String, Evaluacion> mapaEvaluaciones;
 
-  //Constructor
+  /**
+   * Constructor de Colegio que Inicializa los parámetros.
+   */  
   public Colegio(){
     arrayEvaluaciones = new ArrayList();
     mapaEvaluaciones = new HashMap();
   }
 
-  //Busca una evaluación
+  
+  /**
+   * Método que busca una evaluación
+   * @param nomUnidad Unidad de la evaluación a buscar
+   * @return Evaluación buscada
+   * @throws EvaluacionNotFoundException Error de evaluación no encontrada.
+   */
   public Evaluacion buscarEvaluacion(String nomUnidad) throws EvaluacionNotFoundException{
-    /*
-    if(arrayEvaluaciones.isEmpty()== true){
-      return null;
-    }
-    */
-    
+
+    //Se revisa si el mapa contiene la evaluación, lo cual es lo más útil y rápido.
     if(mapaEvaluaciones.containsKey(nomUnidad) == true){
+      //Si lo contiene, lo retorna.
       return mapaEvaluaciones.get(nomUnidad);
     }
     else{
+      //En caso contrario lanza una excepción de una clase creada por nosotros que indica que la evaluación no se encontró.
       throw new EvaluacionNotFoundException();
     }
     // por ultimo de no encontrar nada en el proceso por defecto retornara null
     //return null;
   }
 
-  //Busca todas las evaluaciones de una asignatura
+
+  /**
+   * Méteodo que Busca todas las evaluaciones de una asignatura
+   * @param asignatura Asignatura de las evaluaciones que se quieren mostrar.
+   * @return ArrayList de evaluaciones que corresponden a esa asignatura.
+   */
   public ArrayList <Evaluacion> buscarEvaluacionAsignatura(String asignatura){
+    
     ArrayList <Evaluacion> aux = new ArrayList();
+    //Revisa en el ArrayList de evaluaciones si es que hay evaluaciones de esa asignatura en específico.
     for(int i = 0; i < arrayEvaluaciones.size(); i++){
       Evaluacion ee = arrayEvaluaciones.get(i);
       if(ee.getAsignatura().equals(asignatura)){
+        //Si es que hay, se agregan a un ArrayList con las evaluaciones de esa asignatura para retornarlo.
         aux.add(ee);
       }
     }
-    
+
+    //Realiza un try-catch para atrapar la excepción en caso de que no hayan evaluaciones de esa asignatura
+    //(SinEvaluacionesException)
     try{
       hayEvaluaciones(arrayEvaluaciones);
       return aux;
@@ -49,9 +65,17 @@ public class Colegio{
     
   }
 
-  //Agrega una nota
+  
+  /**
+   * Método que Agrega una Evaluación.
+   * @param ee Evaluación a agregar.
+   * @return Verdadero si se agregó, falso en caso contrario.
+   */
   public boolean agregarEvaluacion(Evaluacion ee){
-    //Si la asignatura no se encuentra se devuelve un false
+    //Se recibe la evaluación, en caso de que no se encuentre se atrapa
+    //la excepción y se añade al ArrayList y al HashMap
+    //Si la asignatura se encuentra se devuelve un false
+    //Si se añade retorna true
     try{
       Evaluacion aux = buscarEvaluacion(ee.getUnidad());
       return false;
@@ -60,25 +84,23 @@ public class Colegio{
       mapaEvaluaciones.put(ee.getUnidad(),ee);
       return true;
     }
-    //if(aux != null) return false;
-    
-    //Si pasa el if anterior significa que la asignatura no existe por lo tanto se agrega
     
   }
 
-  //Elimina una evaluacio
+  /**
+  * Método que Elimina una evaluacion
+  * @param unidad Unidad de evaluación a eliminar.
+  * @return Verdadero si se eliminó, falso en caso contrario.
+  */
   public boolean eliminarEvaluacion(String unidad){
-    //Se obtiene la asignatura
+    //Se busca la evaluación y en caso de encontrarla se elimina
+    //Sino se captura a la excepción de que no se encontró la evaluación y retorna false.
     Evaluacion ee = new Evaluacion();
     try{
        ee = buscarEvaluacion(unidad);
     }catch (EvaluacionNotFoundException e){
       return false;
     }
-    
-    //Si no existe, no se elimina y retorna falso
-
-    
       //Busco en el ArrayList de Evaluacioens
     for(int i = 0; i < arrayEvaluaciones.size(); i++){
       Evaluacion eva = arrayEvaluaciones.get(i);
@@ -93,8 +115,15 @@ public class Colegio{
     return false;
   }
 
-  //Sobrecarda para eliminar una evaluacion
+  
+  /**
+   * Sobrecarga para eliminar una evaluacion
+   * @param vieja Unidad de evaluación antigua para eliminar de HashMap.
+   * @param nueva Unidad de evaluación para eliminar en ArrayList.
+   */
   public void eliminarEvaluacion(String vieja,String nueva){
+    //Se busca la evaluación en el ArrayList por la nueva unidad, al encontrarla se elimina
+    //del ArrayLis y del mapa con la vieja unidad.
     for(int i = 0; i < arrayEvaluaciones.size(); i++){
       Evaluacion eva = arrayEvaluaciones.get(i);
       if(eva.getUnidad().equals(nueva)){
@@ -106,9 +135,14 @@ public class Colegio{
     
   }
 
-  
-  //Elimina una pregunta
+  /**
+   * Método que Elimina una pregunta
+   * @param pregunta pregunta a eliminar.
+   * @return Verdadero si se eliminó, falso en caso contrario.
+   */
   public boolean eliminarPregunta(String pregunta){
+    //Se busca la pregunta en las evaluaciones, cuando se encuentre en una evaluación
+    //la elimina y retorna true, en caso contrario retorna false.
     for(int i = 0; i < arrayEvaluaciones.size(); i++){
       Evaluacion eva = arrayEvaluaciones.get(i);
       Pregunta preg = eva.buscarPregunta(pregunta);
@@ -120,8 +154,15 @@ public class Colegio{
     return false;
   }
 
-  //Agrega una pregunta
+  
+  /**
+   * Método que Agrega una pregunta.  
+   * @param pregunta pregunta a añadir.
+   * @param ee Evaluación a la que se agrega la pregunta.
+   * @return Verdadero si se añadió, falso en caso contrario.
+   */
   public boolean anadirPregunta(Pregunta pregunta, Evaluacion ee){
+    //Busca la pregunta y si está repetida no la añade, en caso contrario si.
     Pregunta pregunta2 = ee.buscarPregunta(pregunta.getPregunta()); 
     if(pregunta2 !=null){
       return false;
@@ -132,8 +173,17 @@ public class Colegio{
     }
     
   }
-  
+
+  /**
+   * Método que verifica si hay evaluaciones.
+   * @param ee ArrayList de evaluaciones.
+   * @return Verdadero si no está vacío, falso en caso contrario.
+   * @throws SinEvaluacionesException Error de que no hay evaluaciones.
+   */
   public boolean hayEvaluaciones(ArrayList <Evaluacion> ee)throws SinEvaluacionesException{
+    //En caso de que hayan evaluaciones, retorna true, en caso contrario
+    //Lanza una excepción creada en otra clase para señalar que no hay evaluaciones.
+    
     if(ee.isEmpty()!=true){
       return true;
     }
@@ -142,24 +192,11 @@ public class Colegio{
     }
   }
 
-  
-/*
-  public boolean anadirPregunta(Pregunta pregunta, String unidad){
-    Evaluacion ee = mapaEvaluaciones.get(unidad);
-
-    if(ee==null){
-      return false;
-    }else{
-      anadirPregunta(pregunta,ee);
-      return true;
-    }
-  }
-*/
-  //Se inicializan datos para que no esté todo vacío
-
-
+  /**
+   * Método que inicializa datos, es ocupado solo una vez ya que luego se quedan guardados en el csv "Datos".
+   */
   public void datosIniciales(){
-    //Se crea una asignatura       unidad, asignatura, tema
+    
     Evaluacion eva1 = new Evaluacion("Limites", "Matematicas", "12-06-2022");
     agregarEvaluacion(eva1);
     
@@ -381,7 +418,9 @@ public class Colegio{
     agregarEvaluacion(evaIngles);
   }
 
-
+  /**
+   * @return clon del ArrayList de evaluaciones.
+   */
   public ArrayList <Evaluacion> getEvaluaciones(){
     ArrayList <Evaluacion> aux = (ArrayList <Evaluacion>) arrayEvaluaciones.clone();
     return aux;

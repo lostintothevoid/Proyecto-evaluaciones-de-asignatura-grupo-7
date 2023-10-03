@@ -9,12 +9,19 @@ import java.io.PrintWriter;
 
 
 public class Menu {
-  Colegio colegio;
+  private Colegio colegio;
   
+  /**
+   * Constructor de Colegio que Inicializa los parámetros.
+   */
   public Menu(Colegio colegio){
     this.colegio = colegio;
   }
-  
+
+  /**
+   * Método que genera la opciones del programa.
+   * @throws IOException Error de I/O
+   */
   public void opciones() throws IOException{
    
     // se utiliza el lector para registrar la eleccion del usuario
@@ -33,6 +40,7 @@ public class Menu {
       System.out.println("Ingrese 9 para eliminar una evaluación");
       System.out.println("Ingrese 10 para eliminar una pregunta");
       System.out.println("Ingrese 11 para eliminar una nota");
+      System.out.println("Ingrese 12 para ver una evaluacion");
       System.out.println("Ingrese 0 para salir de la aplicación");
       
       System.out.println("");
@@ -97,6 +105,12 @@ public class Menu {
           eliminarNota(lector);
           System.out.println("");
           break;
+
+        case 12:
+          mostrarEvaluacion(lector);
+          System.out.println("");
+          break;
+            
         default:
           System.out.println("No se ingresó una opción válida");
           break;
@@ -105,6 +119,11 @@ public class Menu {
     }  
   }
 
+  /**
+   * Método que agrega una evaluación
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void agregarEvaluacion(BufferedReader lector) throws IOException{
     //Se agrega una evaluacion nueva.
     System.out.println("Ingrese el nombre de la evaluacion que desea agregar: ");
@@ -151,7 +170,13 @@ public class Menu {
       colegio.agregarEvaluacion(eva);
     }
   }
-  
+
+  /**
+   * Método que agrega una pregunta.
+   * @param lector Lector de la consola 
+   * @param ee Evaluacion a la que se agrega la pregunta.
+   * @throws IOException Error de I/O.
+   */
   public void agregarPregunta(BufferedReader lector, Evaluacion ee) throws IOException{
     
     System.out.println("Ingrese la pregunta: ");
@@ -199,7 +224,12 @@ public class Menu {
         break;
     }
   }
-  
+
+  /**
+   * Método que agrega una pregunta.
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void agregarPregunta(BufferedReader lector)throws IOException{
     //Se agrega una evaluación a una asignatura en específico
     System.out.println("Ingrese la unidad de la evaluacion a la que desea añadir la pregunta: ");
@@ -272,7 +302,12 @@ public class Menu {
     }
     
   }
-    
+
+  /**
+   * Método que muestra las preguntas de una evaluacion.
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void verPreguntasEva(BufferedReader lector)throws IOException{
     //Se muestran todas las preguntaspreguntas de una evaluacion
     System.out.println("Ingrese unidad de la evaluacion");
@@ -302,6 +337,11 @@ public class Menu {
     }
   }
     
+  /**
+   * Método que muestra todas las evaluaciones.
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void verEvaluaciones(BufferedReader lector)throws IOException{
     ArrayList <Evaluacion> arryEva = colegio.getEvaluaciones();
     
@@ -323,7 +363,12 @@ public class Menu {
     }
     
   }
-  //cambio
+  
+  /**
+   * Método que agrega una evaluación
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void editEvaluacion(BufferedReader lector)throws IOException{
     System.out.println("Ingrese unidad de la evaluacion a editar");
     String nombreEvaEdit = lector.readLine();
@@ -389,6 +434,13 @@ public class Menu {
     }   
   }
 
+  /**
+   * Edita una pregunta con ingresandole su evaluación
+   * 
+   * @param eva Evaluación de la pregunta a editar
+   * @param lector Lector de la consola
+   * @throws IOException Error de I/O
+   */
   public void editPregunta(Evaluacion eva, BufferedReader lector)throws IOException{
 
     System.out.println("Ingrese la pregunta que quiera editar");
@@ -491,18 +543,6 @@ public class Menu {
               String altCor = lector.readLine();
               char chars = (!altCor.isEmpty()) ? altCor.charAt(0) : '\0';
               ppAlt.setAltCorrecta(chars);          
-              /*
-              while(true){
-               if(!ppAlt.confirmarAlternativa(chars)){
-                 System.out.println("La alternativa correcta no está entre las alternativas");
-                  altCor = lector.readLine();
-               }
-               else{
-                  ppAlt.setAltCorrecta(chars);
-                  break;
-                }
-             }
-             */
               break;
           
            case 4:
@@ -521,8 +561,14 @@ public class Menu {
 
       default:
     }
+
   }
-  /*
+
+  /**
+   * Método que edita una pregunta
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void editPregunta(BufferedReader lector)throws IOException{
     System.out.println("Ingrese la evaluacion de la cual quiere editar la pregunta");
     String nombre = lector.readLine();
@@ -534,141 +580,134 @@ public class Menu {
       return;
     }
     
+
     System.out.println("Ingrese la pregunta que quiera editar");
     String nomPreg = lector.readLine();
-    Pregunta pp = eva.buscarPregunta(nomPreg);
-    if(pp == null){
+    Pregunta preg = eva.buscarPregunta(nomPreg);
+    if(preg == null){
       System.out.println("La pregunta no se encuentra registrada.");
       return;
     }
-    //int cont=0;
-    while(true){
-      System.out.println("1. Tema ");
-      System.out.println("2. Alternativas");
-      System.out.println("3. Alternativa Correcta");
-      System.out.println("4. El enunciado de la pregunta");
-      System.out.println("0. No hay más por editar");
-      int opcion = Integer.parseInt(lector.readLine());
+
+    System.out.println("Ingrese el tipo de pregunta que quiera editar");
+    String tipoPreg = lector.readLine();
+
+    switch(tipoPreg){
+      case "Desarrollo":
+         PreguntaDesarrollo ppDesa = (PreguntaDesarrollo) preg;
+         while(true){
+          System.out.println("1. Tema ");
+          System.out.println("2. Respuesta esperada ");
+          System.out.println("4. El enunciado de la pregunta");
+          System.out.println("0. No hay más por editar");
+          int opcion = Integer.parseInt(lector.readLine());
       
-      switch(opcion){
-        case 1:
-          System.out.println("Ingrese el nuevo tema: ");
-          String tema = lector.readLine();
-          pp.setTema(tema);
-          break;
+          switch(opcion){
+            case 1:
+              System.out.println("Ingrese el nuevo tema: ");
+              String tema = lector.readLine();
+              ppDesa.setTema(tema);
+            break;
           
-        case 2:
-          ArrayList <String> alternativas = (ArrayList <String>) pp.getAlternativas();
-          System.out.println("Escoga cual alternativa desea cambiar:");
-          
-          ArrayList<Character> letrasArray = new ArrayList<>();
-          for (char letra = 'a'; letra <= 'z'; letra++) {
-            letrasArray.add(letra);
-          }
-          
-          for(int i = 0; i < alternativas.size(); i++){
-            String alt = alternativas.get(i);
-            System.out.println(letrasArray.get(i) + ") " + alt);
-          }
-          String alter = lector.readLine();
-          char [] aux = alter.toCharArray();
-          int posicion = 0;
-          for(int i = 0; i<letrasArray.size(); i++) {
-            if(letrasArray.get(i) == aux[0]){
-              posicion = i;
+            case 2:
+              System.out.println("Cual es la respuesta esperada?");
+              String altCor = lector.readLine();
+              ppDesa.setRespEsperada(altCor);
               break;
-            }
-          } 
           
-          System.out.println(posicion);
+           case 3:
+              System.out.println("Ingrese el nuevo enunciado de la pregunta:");
+              String pregunta = lector.readLine();
+              ppDesa.setPregunta(pregunta);
+             break;
           
-          System.out.println("Ingrese la nueva alternativa: ");
-          String nuevaAlter = lector.readLine();
-          pp.setAlternativa(nuevaAlter, posicion);
-          break;
-          
-        case 3:
-          System.out.println("Cual es la alternativa correcta?");
-          String altCor = lector.readLine();
-          
-          while(true){
-            if(!pp.confirmarAlternativa(altCor)){
-              System.out.println("La alternativa correcta no está entre las alternativas");
-              altCor = lector.readLine();
-            }
-            else{
-              pp.setAltCorrecta(altCor);
-              break;
-            }
-          }
-          break;
-          
-        case 4:
-          System.out.println("Ingrese el nuevo enunciado de la pregunta:");
-          String pregunta = lector.readLine();
-          pp.setPregunta(pregunta);
-          break;
-          
-        case 0:
-          return;
-
-        default:
-          
-      }
-    }
-  }
-  */
-  //posible obsoleto
-  public void editNota(BufferedReader lector)throws IOException{
-    System.out.println("Ingrese la evaluacion de la cual quiere editar la nota");
-    String nombre = lector.readLine();
-
-    Evaluacion eva = new Evaluacion();
-    try{
-      eva = colegio.buscarEvaluacion(nombre);
-    }catch(EvaluacionNotFoundException e){
-      return;
-    }
+            case 0:
+              return;
     
-    System.out.println("Ingrese el alumno cuya nota desea editar");
-    String nomAlu = lector.readLine();
-    Nota nn = eva.buscarNota(nomAlu);
-    if(nn == null){
-      System.out.println("La nota no se encuentra registrada.");
-      return;
+           default:
+          
+         }
+       }
+
+      case "Alternativas":
+        PreguntaAlternativas ppAlt = (PreguntaAlternativas) preg;
+        while(true){
+          System.out.println("1. Tema ");
+          System.out.println("2. Alternativas");
+          System.out.println("3. Alternativa Correcta");
+          System.out.println("4. El enunciado de la pregunta");
+          System.out.println("0. No hay más por editar");
+          int opcion = Integer.parseInt(lector.readLine());
+      
+          switch(opcion){
+            case 1:
+              System.out.println("Ingrese el nuevo tema: ");
+              String tema = lector.readLine();
+              ppAlt.setTema(tema);
+            break;
+          
+            case 2:
+              ArrayList <String> alternativas = (ArrayList <String>) ppAlt.getAlternativas();
+              System.out.println("Escoga cual alternativa desea cambiar:");
+          
+              ArrayList<Character> letrasArray = new ArrayList<>();
+              for (char letra = 'a'; letra <= 'z'; letra++) {
+                letrasArray.add(letra);
+              }
+          
+              for(int i = 0; i < alternativas.size(); i++){
+                String alt = alternativas.get(i);
+                System.out.println(letrasArray.get(i) + ") " + alt);
+              }
+              String alter = lector.readLine();
+              char [] aux = alter.toCharArray();
+              int posicion = 0;
+              for(int i = 0; i<letrasArray.size(); i++) {
+                if(letrasArray.get(i) == aux[0]){
+                  posicion = i;
+                  break;
+                }
+              } 
+          
+              System.out.println(posicion);
+          
+              System.out.println("Ingrese la nueva alternativa: ");
+              String nuevaAlter = lector.readLine();
+              ppAlt.setAlternativa(nuevaAlter, posicion);
+              break;
+          
+            case 3:
+              System.out.println("Cual es la alternativa correcta?");
+              String altCor = lector.readLine();
+              char chars = (!altCor.isEmpty()) ? altCor.charAt(0) : '\0';
+              ppAlt.setAltCorrecta(chars);          
+              break;
+          
+           case 4:
+              System.out.println("Ingrese el nuevo enunciado de la pregunta:");
+              String pregunta = lector.readLine();
+              ppAlt.setPregunta(pregunta);
+             break;
+          
+            case 0:
+              return;
+    
+           default:
+          
+         }
+       }
+
+      default:
     }
 
-    while(true){
-      System.out.println("0. Salir");
-      System.out.println("1. Nota ");
-      System.out.println("2. Alumno");
-      String opcion = lector.readLine();
-      
-      switch(opcion){
-        case "Salir":
-          return;
-          
-        case "Nota":
-          System.out.println("Ingrese nueva nota del alumno "+ nn.getAlumno());
-          String newNota = lector.readLine();   
-          double novoNota = Double.parseDouble(newNota);
-          nn.setNota(novoNota);
-          break;
-          
-        case "Alumno":
-          System.out.println("Ingrese nuevo nombre del alumno");
-          String newAlu = lector.readLine();   
-          nn.setAlumno(newAlu);
-          break;
-          
-        default:
-          System.out.println("Ingrese una opción válida");
-          break;
-          
-      }
-    }
   }
-  //nuevo
+  
+  /**
+   * Método que edita una nota
+   * @param lector Lector de la consola 
+   * @param eva Evaluación donde se editará la nota.
+   * @throws IOException Error de I/O.
+   */
   public void editNota(BufferedReader lector, Evaluacion eva)throws IOException{
     
     System.out.println("Ingrese el alumno cuya nota desea editar");
@@ -710,6 +749,11 @@ public class Menu {
     }
   }
 
+  /**
+   * Método que agrega una nota
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void agregarNota(BufferedReader lector)throws IOException{
     System.out.println("Ingrese la evaluacion a la cual quiere agregar la nota");
     String nombre = lector.readLine();
@@ -729,18 +773,37 @@ public class Menu {
     double novoNota = Double.parseDouble(newNota);
     
     Nota nn = new Nota(novoNota,nomAlu);
-    eva.anadirNota(nn);
+    if(eva.anadirNota(nn)){
+      System.out.println("Se agregó la nota con éxito");
+    }
+    else{
+      System.out.println("El alumno ya tenía una nota añadida");
+    }
     return;
   }
 
+  /**
+   * Método que elimina una evaluacion
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void eliminarEvaluacion(BufferedReader lector)throws IOException{
     System.out.println("Ingrese unidad de la evaluacion a eliminar");
     String nombreEvaEdit = lector.readLine();
 
-    colegio.eliminarEvaluacion(nombreEvaEdit);
-    System.out.println("Eliminación exitosa");   
+    if(colegio.eliminarEvaluacion(nombreEvaEdit)){
+      System.out.println("Eliminación exitosa");
+    }
+    else{
+      System.out.println("No se encontró la evaluación");
+    }
   }
 
+  /**
+   * Método que elimina una pregunta
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void eliminarPregunta(BufferedReader lector)throws IOException{
     System.out.println("Ingrese la evaluacion de la cual quiere eliminar la pregunta");
     String nombre = lector.readLine();
@@ -764,6 +827,11 @@ public class Menu {
     System.out.println("Eliminación exitosa"); 
   }
 
+  /**
+   * Método que elimina una nota
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void eliminarNota(BufferedReader lector)throws IOException{
     System.out.println("Ingrese la evaluacion de la cual quiere editar la nota");
     String nombre = lector.readLine();
@@ -786,7 +854,12 @@ public class Menu {
     eva.eliminarNota(nomAlu);
     System.out.println("Eliminación exitosa"); 
   }  
-  //nuevo
+  
+  /**
+   * Método que muestra todas las notas
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void mostrarNotas(BufferedReader lector)throws IOException{
     System.out.println("Ingrese unidad de la evaluacion");
     String nombre = lector.readLine();
@@ -795,6 +868,7 @@ public class Menu {
     try{
       eva = colegio.buscarEvaluacion(nombre);
     }catch(EvaluacionNotFoundException e){
+      System.out.println("La evaluación no se encuentra registrada");
       return;
     }
     ArrayList <Nota> notas = eva.getNotas();
@@ -808,14 +882,87 @@ public class Menu {
     } 
   }
 
+  /**
+   * Método que muestra todas los parametros de una evaluacion.
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
+
+  public void mostrarEvaluacion(BufferedReader lector)throws IOException{
+    //Se agrega una evaluación a una asignatura en específico
+    System.out.println("Ingrese la unidad de la evaluacion a la que desea añadir la pregunta: ");
+    String nombreEva = lector.readLine();
+    //Si la asignatura no existe se notifica
+    Evaluacion eva = new Evaluacion();
+    try{
+      eva = colegio.buscarEvaluacion(nombreEva);
+    }catch (EvaluacionNotFoundException e){
+      System.out.println("La evaluación no se encuentra registrada");
+      return;
+    }
+
+
+    ArrayList <Pregunta> preguntas =  eva.getPreguntas();
+    int tamano = preguntas.size();
+      String cantPreg = Integer.toString(tamano);
+      
+      System.out.println("Asignatura: "+ eva.getAsignatura() + "\n" + "Unidad: " + eva.getUnidad() + "\n" + "Fecha: " + eva.getFecha() + "\n");
+      
+        
+      for(int j = 0 ; j < preguntas.size() ; j++){
+        Pregunta pp = preguntas.get(j);
+        String tipo;
+        if(pp instanceof PreguntaDesarrollo){
+          PreguntaDesarrollo ppDes = (PreguntaDesarrollo) pp;
+          tipo = "* Pregunta de desarrollo *";
+          System.out.println("\n" + tipo + "\n" + "Pregunta: " + ppDes.getPregunta() + "\n" + "Tema: " + ppDes.getTema() + "\n" + "Respuesta esperada: "+ppDes.getRespEsperada() + "\n");
+        }else{
+          PreguntaAlternativas ppAlt = (PreguntaAlternativas) pp;
+          tipo = "* Pregunta de Alternativas *";
+          ArrayList <String> alternativas = ppAlt.getAlternativas();
+          int tamano2 = alternativas.size();
+          String cantAlt = Integer.toString(tamano2);
+          System.out.println("\n" + tipo + "\n" + "Pregunta: " + ppAlt.getPregunta() + "\n" + "Tema: " + ppAlt.getTema() + "\n");
+
+          ArrayList<Character> letrasArray = new ArrayList<>();
+            for (char letra = 'a'; letra <= 'z'; letra++) {
+            letrasArray.add(letra);
+          }
+          
+          for (int k = 0 ; k < alternativas.size() ; k++){
+            String alt = alternativas.get(k);
+            System.out.println(letrasArray.get(k) + ") " + alt + "\n");
+          }
+          System.out.println("Alternativa correcta: " + ppAlt.getAltCorrecta() + "\n");
+        }
+      }
+
+      ArrayList <Nota> notas = eva.getNotas();
+
+      int tamano3 = notas.size();
+      String cantNotas = Integer.toString(tamano3);
+
+      System.out.println("\n" + "* Notas de los alumnos en la prueba *" + "\n");
+
+      for(int l = 0 ; l < notas.size() ; l++){
+        Nota nn = notas.get(l);
+        System.out.println("Nota: " + nn.getNotaString() + "  Alumno: " + nn.getAlumno() + "\n");
+      }
+  }
+
+  /**
+  *Importa las evaluaciones desde un archivo CSV
+  *@throws Error I/O Exception si ocurre un error al leer el archivo
+  */
+
   public void importar() throws IOException {
-    CSV csv = new CSV("exportar");
+    CSV csv = new CSV("Datos");
     
     String linea = csv.firstLine();
     linea=csv.nextLine();
     int i = 0; //inidca cada elemento recorrido
     while(linea!=null){  
- 
+      i = 0;
       Evaluacion ee = new Evaluacion(); 
       ee.setAsignatura(csv.get_csvField(linea,i));
       i++;//1
@@ -877,7 +1024,6 @@ public class Menu {
             i++;
             colegio.anadirPregunta(ppAlt, ee);
           }
-          //ee.anadirPregunta(pp); 
         }
 
         int cantNotas = Integer.parseInt(csv.get_csvField(linea,i));
@@ -899,8 +1045,13 @@ public class Menu {
     
   }
 
+  /**
+  * Exporta las evaluaciones a un archivo CSV
+  *@throws Error I/O Exception si ocurre un error al escribir el archivo.
+  */
+
   public void exportar()throws IOException{
-    PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(new File("exportar.csv"))));
+    PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(new File("Datos.csv"))));
     
     escritor.println("ASIGNATURA;UNIDAD;FECHA;CANTPREG;PREGUNTA;TEMA;TIPOPREGUNTA;RESPUESTACORRECTA;CANTALT;ALTERNATIVAS;ALTCORRECTA;CANTNOTAS;NOTA;ALUMNO");
     //escritor.newLine();
@@ -955,6 +1106,10 @@ public class Menu {
     escritor.close();
   }
 
+  /**
+   *genera un reporte de las evaluaciones y lo guarda en un archivo csv
+   *@throws I/OException Si ocurre un error al escribir en el archivo
+   */
 
   public void reporte()throws IOException{
     PrintWriter escritor = new PrintWriter(new BufferedWriter(new FileWriter(new File("reporte.csv"))));
@@ -971,7 +1126,7 @@ public class Menu {
       int tamano = preguntas.size();
       String cantPreg = Integer.toString(tamano);
       
-      escritor.print("Unidad: "+ eva.getAsignatura() + "\n" + "Unidad: " + eva.getUnidad() + "\n" + "Fecha: " + eva.getFecha() + "\n");
+      escritor.print("Asignatura: "+ eva.getAsignatura() + "\n" + "Unidad: " + eva.getUnidad() + "\n" + "Fecha: " + eva.getFecha() + "\n");
       
         
       for(int j = 0 ; j < preguntas.size() ; j++){
@@ -980,25 +1135,15 @@ public class Menu {
         if(pp instanceof PreguntaDesarrollo){
           PreguntaDesarrollo ppDes = (PreguntaDesarrollo) pp;
           tipo = "* Pregunta de desarrollo *";
-          escritor.print("\n" + tipo + "\n" + "Pregunta: " + ppDes.getPregunta() + "Tema: " + ppDes.getTema() + "\n" + "Respuesta esperada: "+ppDes.getRespEsperada() + "\n");
+          escritor.print("\n" + tipo + "\n" + ppDes.contenidos());
         }else{
           PreguntaAlternativas ppAlt = (PreguntaAlternativas) pp;
           tipo = "* Pregunta de Alternativas *";
           ArrayList <String> alternativas = ppAlt.getAlternativas();
           int tamano2 = alternativas.size();
           String cantAlt = Integer.toString(tamano2);
-          escritor.print("\n" + tipo + "\n" + "Pregunta: " + ppAlt.getPregunta() + "Tema: " + ppAlt.getTema() + "\n");
+          escritor.print("\n" + tipo + "\n" + ppAlt.contenidos());
 
-          ArrayList<Character> letrasArray = new ArrayList<>();
-            for (char letra = 'a'; letra <= 'z'; letra++) {
-            letrasArray.add(letra);
-          }
-          
-          for (int k = 0 ; k < alternativas.size() ; k++){
-            String alt = alternativas.get(k);
-            escritor.print(letrasArray.get(i) + ") " + alt + "\n");
-          }
-          escritor.print("Alternativa correcta: " + ppAlt.getAltCorrecta() + "\n");
         }
       }
 
@@ -1013,13 +1158,13 @@ public class Menu {
         Nota nn = notas.get(l);
         escritor.print("Nota: " + nn.getNotaString() + "  Alumno: " + nn.getAlumno() + "\n");
       }
-      escritor.println("=======================================================================");// El doble salto de línea es una elección :)
-      escritor.println("\n");// El doble salto de línea es una elección :)
+      //Imprimir promedio
+      //escritor.print("Nota: " + nn.getNotaString() + "  Alumno: " + nn.getAlumno() + "\n");
+      escritor.println("\n" + "=============================================================================================================");
+      escritor.println("");
       
     }
     escritor.close();
   }
-
-
   
 }
