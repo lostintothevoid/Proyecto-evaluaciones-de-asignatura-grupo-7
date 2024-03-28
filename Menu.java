@@ -31,16 +31,18 @@ public class Menu {
       //Opciones
       System.out.println("Ingrese 1 para agregar una evaluacion");
       System.out.println("Ingrese 2 para agregar una pregunta");
-      System.out.println("Ingrese 3 para ver todas las evaluaciones de una asignatura");
-      System.out.println("Ingrese 4 para ver todas las preguntas de una evaluacion");
-      System.out.println("Ingrese 5 para ver todas las evaluaciones");
-      System.out.println("Ingrese 6 para editar una evaluación");
-      System.out.println("Ingrese 7 para editar una pregunta de una evaluación");
-      System.out.println("Ingrese 8 para agregar una nota");
-      System.out.println("Ingrese 9 para eliminar una evaluación");
-      System.out.println("Ingrese 10 para eliminar una pregunta");
-      System.out.println("Ingrese 11 para eliminar una nota");
-      System.out.println("Ingrese 12 para ver una evaluacion");
+      System.out.println("Ingrese 3 para agregar una nota");
+      System.out.println("Ingrese 4 para eliminar una evaluación");
+      System.out.println("Ingrese 5 para eliminar una pregunta");
+      System.out.println("Ingrese 6 para eliminar una nota ");
+      System.out.println("Ingrese 7 para editar una evaluación");
+      System.out.println("Ingrese 8 para editar una pregunta de una evaluación");
+      System.out.println("Ingrese 9 para ver todas las evaluaciones");
+      System.out.println("Ingrese 10 para ver todas las evaluaciones de una asignatura");
+      System.out.println("Ingrese 11 para ver una evaluacion");  
+      System.out.println("Ingrese 12 para ver todas las preguntas de una evaluacion");
+      System.out.println("Ingrese 13 para ver todas las motas de una evaluacion");
+      System.out.println("Ingrese 14 para generar un reporte");  
       System.out.println("Ingrese 0 para salir de la aplicación");
       
       System.out.println("");
@@ -70,47 +72,64 @@ public class Menu {
           System.out.println("");
           break;
         case 3:
-          verEvaluacionesAsignatura(lector);
-          System.out.println("");
-          break;
-        case 4:
-          verPreguntasEva(lector);
-          System.out.println("");
-          break;
-        case 5:
-          verEvaluaciones(lector);
-          System.out.println("");
-          break;
-        case 6:
-          editEvaluacion(lector);
-          System.out.println("");
-          break;
-        case 7:
-          //editPregunta(lector);
-          System.out.println("");
-          break;
-        case 8:
           agregarNota(lector);
           System.out.println("");
           break;
-        case 9:
+        case 4:
           eliminarEvaluacion(lector);
           System.out.println("");
           break;
-        case 10:
+          
+        case 5:
           eliminarPregunta(lector);
           System.out.println("");
           break;
-        case 11:
+
+        case 6:
           eliminarNota(lector);
           System.out.println("");
           break;
+          
+        case 7:
+          editEvaluacion(lector);
+          System.out.println("");
+          break;
+          
+        case 8:
+          editPregunta(lector);
+          System.out.println("");
+          break;
+          
+        case 9:
+          verEvaluaciones(lector);
+          System.out.println("");
+          break;
 
-        case 12:
+        case 10:
+          verEvaluacionesAsignatura(lector);
+          System.out.println("");
+          break;
+          
+        case 11:
           mostrarEvaluacion(lector);
           System.out.println("");
           break;
-            
+          
+        case 12:
+          verPreguntasEva(lector);
+          System.out.println("");
+          break;
+          
+        case 13:
+          mostrarNotas(lector);
+          System.out.println("");
+          break;
+        
+        case 14:
+          reporte();
+          System.out.println("");
+          break;
+          
         default:
           System.out.println("No se ingresó una opción válida");
           break;
@@ -288,7 +307,12 @@ public class Menu {
         break;
     }
   }
-  
+
+  /**
+   * Método que muestra todas las evaluaciones pertenecientes a una asignatura.
+   * @param lector Lector de la consola 
+   * @throws IOException Error de I/O.
+   */
   public void verEvaluacionesAsignatura(BufferedReader lector)throws IOException{
     System.out.println("Ingrese la asignatura para ver sus Evaluaciones");
     String asignatura = lector.readLine();
@@ -348,7 +372,7 @@ public class Menu {
     try{
       colegio.hayEvaluaciones(arryEva);
     }catch(SinEvaluacionesException e){
-      System.out.println("no ai na");
+      System.out.println("No hay evaluaciones registradas");
       return;
     }
     
@@ -460,7 +484,7 @@ public class Menu {
          while(true){
           System.out.println("1. Tema ");
           System.out.println("2. Respuesta esperada ");
-          System.out.println("4. El enunciado de la pregunta");
+          System.out.println("3. El enunciado de la pregunta");
           System.out.println("0. No hay más por editar");
           int opcion = Integer.parseInt(lector.readLine());
       
@@ -723,19 +747,20 @@ public class Menu {
       System.out.println("1. Nota ");
       System.out.println("2. Alumno");
       String opcion = lector.readLine();
+      int opcion1 = Integer.parseInt(opcion);
       
-      switch(opcion){
-        case "Salir":
+      switch(opcion1){
+        case 0:
           return;
           
-        case "Nota":
+        case 1:
           System.out.println("Ingrese nueva nota del alumno "+ nn.getAlumno());
           String newNota = lector.readLine();   
           double novoNota = Double.parseDouble(newNota);
           nn.setNota(novoNota);
           break;
           
-        case "Alumno":
+        case 2:
           System.out.println("Ingrese nuevo nombre del alumno");
           String newAlu = lector.readLine();   
           nn.setAlumno(newAlu);
@@ -952,7 +977,7 @@ public class Menu {
 
   /**
   *Importa las evaluaciones desde un archivo CSV
-  *@throws Error I/O Exception si ocurre un error al leer el archivo
+  *@throws IOException si ocurre un error I/O al leer el archivo
   */
 
   public void importar() throws IOException {
@@ -1047,7 +1072,7 @@ public class Menu {
 
   /**
   * Exporta las evaluaciones a un archivo CSV
-  *@throws Error I/O Exception si ocurre un error al escribir el archivo.
+  *@throws IOException si ocurre un error I/O al escribir el archivo.
   */
 
   public void exportar()throws IOException{
@@ -1108,7 +1133,7 @@ public class Menu {
 
   /**
    *genera un reporte de las evaluaciones y lo guarda en un archivo csv
-   *@throws I/OException Si ocurre un error al escribir en el archivo
+   *@throws IOException Si ocurre un error I/O al escribir en el archivo
    */
 
   public void reporte()throws IOException{
@@ -1165,6 +1190,7 @@ public class Menu {
       
     }
     escritor.close();
+    System.out.pinrtln("El reporte se realizó con éxito");
   }
   
 }

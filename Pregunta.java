@@ -20,7 +20,7 @@ public class Pregunta{
    *Constructor sin parámetros, usado para instanciar una variable Pregunta
    */
   public Pregunta(){
-
+    this.pregunta = "pepe";
   }
 
   /**

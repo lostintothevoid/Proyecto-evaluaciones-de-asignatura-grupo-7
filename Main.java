@@ -10,6 +10,5 @@ public class Main {
     //colegio.datosIniciales(); 
     mainmenu.opciones();
     mainmenu.exportar();
-    mainmenu.reporte();
   }
 }
